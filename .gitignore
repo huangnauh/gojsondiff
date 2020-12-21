@@ -1,2 +1,4 @@
 *.test
 vendor
+bin/*
+!bin/.gitkeep
