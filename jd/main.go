@@ -16,7 +16,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "jd"
 	app.Usage = "JSON Diff"
-	app.Version = "0.0.2"
+	app.Version = "0.0.3"
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
@@ -29,6 +29,11 @@ func main() {
 			Name:   "coloring, c",
 			Usage:  "Enable coloring in the ASCII mode (not available in the delta mode)",
 			EnvVar: "COLORING",
+		},
+		cli.BoolFlag{
+			Name:   "diff, d",
+			Usage:  "Only output differences",
+			EnvVar: "ONLY_DIFF",
 		},
 		cli.BoolFlag{
 			Name:   "quiet, q",
@@ -80,6 +85,7 @@ func main() {
 				config := formatter.AsciiFormatterConfig{
 					ShowArrayIndex: true,
 					Coloring:       c.Bool("coloring"),
+					OnlyDiff:       c.Bool("diff"),
 				}
 
 				formatter := formatter.NewAsciiFormatter(aJson, config)

@@ -29,6 +29,7 @@ type AsciiFormatter struct {
 type AsciiFormatterConfig struct {
 	ShowArrayIndex bool
 	Coloring       bool
+	OnlyDiff       bool
 }
 
 var AsciiFormatterDefaultConfig = AsciiFormatterConfig{}
@@ -194,7 +195,7 @@ func (f *AsciiFormatter) processItem(value interface{}, deltas []diff.Delta, pos
 			}
 
 		}
-	} else {
+	} else if !f.config.OnlyDiff {
 		f.printRecursive(positionStr, value, AsciiSame)
 	}
 
