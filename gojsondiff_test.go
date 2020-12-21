@@ -1,13 +1,12 @@
-package gojsondiff_test
+package gojsondiff
 
 import (
-	. "github.com/yudai/gojsondiff"
+	"io/ioutil"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	. "github.com/yudai/gojsondiff/tests"
 
-	"io/ioutil"
+	. "github.com/huangnauh/gojsondiff/tests"
 )
 
 var _ = Describe("Gojsondiff", func() {

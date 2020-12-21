@@ -1,10 +1,10 @@
 package tests
 
 import (
-	. "github.com/onsi/ginkgo"
-
 	"encoding/json"
 	"io/ioutil"
+
+	. "github.com/onsi/ginkgo"
 )
 
 func LoadFixture(file string) map[string]interface{} {

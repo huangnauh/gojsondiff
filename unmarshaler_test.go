@@ -1,15 +1,14 @@
-package gojsondiff_test
+package gojsondiff
 
 import (
-	. "github.com/yudai/gojsondiff"
-
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-	. "github.com/yudai/gojsondiff/tests"
-
 	"encoding/json"
 	"fmt"
-	"github.com/yudai/pp"
+
+	"github.com/k0kubun/pp"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+
+	. "github.com/huangnauh/gojsondiff/tests"
 )
 
 var _ = Describe("Gojsondiff", func() {
