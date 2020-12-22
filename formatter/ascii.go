@@ -30,6 +30,7 @@ type AsciiFormatterConfig struct {
 	ShowArrayIndex bool
 	Coloring       bool
 	OnlyDiff       bool
+	ArrayDiff      int
 }
 
 var AsciiFormatterDefaultConfig = AsciiFormatterConfig{}
@@ -76,8 +77,9 @@ func (f *AsciiFormatter) formatArray(left []interface{}, df diff.Diff) {
 
 func (f *AsciiFormatter) processArray(array []interface{}, deltas []diff.Delta) error {
 	patchedIndex := 0
+	onlyDiff := f.config.OnlyDiff && len(array) >= f.config.ArrayDiff
 	for index, value := range array {
-		f.processItem(value, deltas, diff.Index(index))
+		f.processItem(value, deltas, diff.Index(index), onlyDiff)
 		patchedIndex++
 	}
 
@@ -101,7 +103,7 @@ func (f *AsciiFormatter) processObject(object map[string]interface{}, deltas []d
 	names := sortedKeys(object)
 	for _, name := range names {
 		value := object[name]
-		f.processItem(value, deltas, diff.Name(name))
+		f.processItem(value, deltas, diff.Name(name), f.config.OnlyDiff)
 	}
 
 	// Added
@@ -116,7 +118,7 @@ func (f *AsciiFormatter) processObject(object map[string]interface{}, deltas []d
 	return nil
 }
 
-func (f *AsciiFormatter) processItem(value interface{}, deltas []diff.Delta, position diff.Position) error {
+func (f *AsciiFormatter) processItem(value interface{}, deltas []diff.Delta, position diff.Position, onlyDiff bool) error {
 	matchedDeltas := f.searchDeltas(deltas, position)
 	positionStr := position.String()
 	if len(matchedDeltas) > 0 {
@@ -195,7 +197,7 @@ func (f *AsciiFormatter) processItem(value interface{}, deltas []diff.Delta, pos
 			}
 
 		}
-	} else if !f.config.OnlyDiff {
+	} else if !onlyDiff {
 		f.printRecursive(positionStr, value, AsciiSame)
 	}
 
