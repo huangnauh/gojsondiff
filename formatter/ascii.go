@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"reflect"
 	"sort"
 
 	diff "github.com/huangnauh/gojsondiff"
@@ -77,8 +78,20 @@ func (f *AsciiFormatter) formatArray(left []interface{}, df diff.Diff) {
 
 func (f *AsciiFormatter) processArray(array []interface{}, deltas []diff.Delta) error {
 	patchedIndex := 0
-	onlyDiff := f.config.OnlyDiff && len(array) >= f.config.ArrayDiff
 	for index, value := range array {
+		onlyDiff := f.config.OnlyDiff
+		v := reflect.ValueOf(value)
+		if !v.IsValid() {
+			return errors.New("invalid value")
+		}
+		t := v.Type()
+		switch t.Kind() {
+		case reflect.Bool, reflect.Int, reflect.Int8, reflect.Int16,
+			reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8,
+			reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr,
+			reflect.Float32, reflect.Float64, reflect.String:
+			onlyDiff = onlyDiff && len(array) >= f.config.ArrayDiff
+		}
 		f.processItem(value, deltas, diff.Index(index), onlyDiff)
 		patchedIndex++
 	}

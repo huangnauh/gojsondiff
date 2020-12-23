@@ -35,6 +35,10 @@ func main() {
 			Usage:  "Only output differences",
 			EnvVar: "ONLY_DIFF",
 		},
+		cli.IntFlag{
+			Name:  "array-diff",
+			Usage: "array differences",
+		},
 		cli.BoolFlag{
 			Name:   "quiet, q",
 			Usage:  "Suppress output, if no differences are found",
@@ -86,6 +90,7 @@ func main() {
 					ShowArrayIndex: true,
 					Coloring:       c.Bool("coloring"),
 					OnlyDiff:       c.Bool("diff"),
+					ArrayDiff:      c.Int("array-diff"),
 				}
 
 				formatter := formatter.NewAsciiFormatter(aJson, config)
